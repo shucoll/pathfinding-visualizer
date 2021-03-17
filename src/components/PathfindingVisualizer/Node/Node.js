@@ -1,17 +1,16 @@
-import styles from './Node.module.scss';
+import './Node.scss';
 
-
-const Node = props => {
-
+const Node = (props) => {
   const {
     col,
+    row,
     isFinish,
     isStart,
     isWall,
-    // onMouseDown,
-    // onMouseEnter,
-    // onMouseUp,
-    row,
+    onMouseDown,
+    onMouseEnter,
+    onMouseUp,
+    onMouseLeave,
   } = props;
 
   const extraClassName = isFinish
@@ -22,19 +21,16 @@ const Node = props => {
     ? 'node-wall'
     : '';
 
-  return(
+  return (
     <div
-    id={`node-${row}-${col}`}
-    className={styles.node}
-    // onMouseDown={() => onMouseDown(row, col)}
-    // onMouseEnter={() => onMouseEnter(row, col)}
-    // onMouseUp={() => onMouseUp()}
-    >
-      
-    </div>
+      id={`node-${row}-${col}`}
+      className={`node ${extraClassName}`}
+      onMouseDown={() => onMouseDown(row, col)}
+      onMouseEnter={() => onMouseEnter(row, col)}
+      onMouseUp={() => onMouseUp()}
+      onMouseLeave={() => onMouseLeave(row, col)}
+    ></div>
   );
-
 };
-
 
 export default Node;
