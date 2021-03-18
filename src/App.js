@@ -5,11 +5,8 @@ import PathfindingVisualizer from './components/PathfindingVisualizer/Pathfindin
 
 function App() {
   return (
-
-    <div className="App">
-      <Header/>
+    <div className='App'>
       <PathfindingVisualizer />
-      <footer>Footer</footer>
     </div>
   );
 }

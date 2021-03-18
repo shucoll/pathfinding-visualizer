@@ -1,4 +1,23 @@
 .header {
-  height:100px;
-  background-color: grey;
+  height:90px;
+  padding: 15px;
+  background-color: #0e4d92;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  color:#f2f2f2;
+}
+
+.name {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.controls {
+  display: flex;
+}
+
+.button {
+  color: inherit;
 }

@@ -3,6 +3,9 @@ import { useState } from 'react';
 import './PathfindingVisualizer.scss';
 
 import Node from './Node/Node';
+import Header from '../Header/Header';
+
+import { dijkstra } from '../algorithms/dijkstra';
 
 //onMouseDown = just pressing the mouse button
 //onMouseUp = releasing the mouse button
@@ -16,16 +19,6 @@ let END_COL = 35;
 const PathfindingVisualizer = (props) => {
   const ROW_COUNT = 20;
   const COLUMN_COUNT = 50;
-
-  // const START_NODE_ROW = 10;
-  // const START_NODE_COL = 15;
-  // const END_NODE_ROW = 10;
-  // const END_NODE_COL = 35;
-
-  // const [START_ROW, changeStartRow] = useState(START_NODE_ROW);
-  // const [START_COL, changeStartCol] = useState(START_NODE_COL);
-  // const [END_ROW, changeEndRow] = useState(END_NODE_ROW);
-  // const [END_COL, changeEndCol] = useState(END_NODE_COL);
 
   const createNode = (col, row) => {
     return {
@@ -56,39 +49,24 @@ const PathfindingVisualizer = (props) => {
   const [mouseIsPressed, changeMousePressed] = useState(false);
   const [startPressed, changeStartPressed] = useState(false);
   const [finishPressed, changeFinishPressed] = useState(false);
-  //const startPressed = false;
 
   const getNewGridWithWallToggled = (row, col) => {
     const newGrid = grid.slice();
-    // console.log('newGrid', newGrid);
-
-    // console.log(row, col);
-
     const node = newGrid[row][col];
 
-    //console.log('node', node);
     const newNode = {
       ...node,
       isWall: !node.isWall,
     };
 
-    //console.log('newNode', newNode);
     newGrid[row][col] = newNode;
-
-    //console.log('newGrid', newGrid);
 
     return newGrid;
   };
 
-  const getNewGridWithStartNodeChange = (row, col, terminal) => {
+  const getNewGridWithTerminalNodeChange = (row, col, terminal) => {
     const newGrid = grid.slice();
-    // console.log('newGrid', newGrid);
-
-    // console.log(row, col);
-
     const node = newGrid[row][col];
-
-    //console.log('node', node);
     let newNode;
     if (terminal === 'start') {
       newNode = {
@@ -105,12 +83,7 @@ const PathfindingVisualizer = (props) => {
       END_ROW = row;
       END_COL = col;
     }
-
-    //console.log('newNode', newNode);
-
     newGrid[row][col] = newNode;
-
-    //console.log('newGrid', newGrid);
 
     return newGrid;
   };
@@ -130,10 +103,10 @@ const PathfindingVisualizer = (props) => {
   const handleMouseEnter = (row, col) => {
     if (!mouseIsPressed) return;
     else if (startPressed) {
-      const newGrid = getNewGridWithStartNodeChange(row, col, 'start');
+      const newGrid = getNewGridWithTerminalNodeChange(row, col, 'start');
       changeGrid(newGrid);
     } else if (finishPressed) {
-      const newGrid = getNewGridWithStartNodeChange(row, col, 'finish');
+      const newGrid = getNewGridWithTerminalNodeChange(row, col, 'finish');
       changeGrid(newGrid);
     } else {
       const newGrid = getNewGridWithWallToggled(row, col);
@@ -143,10 +116,10 @@ const PathfindingVisualizer = (props) => {
 
   const handleMouseLeave = (row, col) => {
     if (startPressed) {
-      const newGrid = getNewGridWithStartNodeChange(row, col, 'start');
+      const newGrid = getNewGridWithTerminalNodeChange(row, col, 'start');
       changeGrid(newGrid);
     } else if (finishPressed) {
-      const newGrid = getNewGridWithStartNodeChange(row, col, 'finish');
+      const newGrid = getNewGridWithTerminalNodeChange(row, col, 'finish');
       changeGrid(newGrid);
     }
   };
@@ -155,6 +128,62 @@ const PathfindingVisualizer = (props) => {
     changeStartPressed(false);
     changeFinishPressed(false);
     changeMousePressed(false);
+  };
+
+  // Backtracks from the finishNode to find the shortest path.
+  // Only works when called *after* the dijkstra method above.
+  const getNodesInShortestPathOrder = (finishNode) => {
+    const nodesInShortestPathOrder = [];
+    let currentNode = finishNode;
+    while (currentNode !== null) {
+      nodesInShortestPathOrder.unshift(currentNode);
+      currentNode = currentNode.previousNode;
+    }
+    return nodesInShortestPathOrder;
+  };
+
+  const animateShortestPath = (nodesInShortestPathOrder) => {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-shortest-path';
+      }, 50 * i);
+    }
+  };
+
+  const animateAlgorithm = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-visited';
+      }, 10 * i);
+    }
+  };
+
+  const visualizeAlgorithm = (algorithm) => {
+    const startNode = grid[START_ROW][START_COL];
+    const finishNode = grid[END_ROW][END_COL];
+
+    let visitedNodesInOrder;
+
+    switch (algorithm) {
+      case 'Dijkstra':
+        visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        break;
+      default:
+    }
+
+    visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
   const gridElement = (
@@ -186,7 +215,12 @@ const PathfindingVisualizer = (props) => {
     </div>
   );
 
-  return <main className={'gridContainer'}>{gridElement}</main>;
+  return (
+    <>
+      <Header visualize={(algo) => visualizeAlgorithm(algo) } />
+      <main className={'gridContainer'}>{gridElement}</main>
+    </>
+  );
 };
 
 export default PathfindingVisualizer;
