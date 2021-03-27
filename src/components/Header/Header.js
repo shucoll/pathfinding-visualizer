@@ -23,9 +23,17 @@ const Header = (props) => {
   };
 
   const handleVisualize = () => {
-    console.log(props);
+    // console.log(props);
     props.visualize(algo);
   };
+
+  const handleClearGrid = () => {
+    props.clearGrid();
+  }
+
+  const handleClearWalls = () => {
+    props.clearWalls();
+  }
 
   return (
     <header className={styles.header}>
@@ -62,6 +70,14 @@ const Header = (props) => {
 
         <Button color='inherit' onClick={handleVisualize}>
           Visualize {algo}
+        </Button>
+
+        <Button color='inherit' onClick={handleClearGrid}>
+          Clear Grid
+        </Button>
+
+        <Button color='inherit' onClick={handleClearWalls}>
+          Clear Walls
         </Button>
       </div>
     </header>

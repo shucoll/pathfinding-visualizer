@@ -49,6 +49,7 @@ const PathfindingVisualizer = (props) => {
   const [mouseIsPressed, changeMousePressed] = useState(false);
   const [startPressed, changeStartPressed] = useState(false);
   const [finishPressed, changeFinishPressed] = useState(false);
+  const [isRunning, toggleIsRunning] = useState(false);
 
   const getNewGridWithWallToggled = (row, col) => {
     const newGrid = grid.slice();
@@ -142,17 +143,27 @@ const PathfindingVisualizer = (props) => {
     return nodesInShortestPathOrder;
   };
 
-  const animateShortestPath = (nodesInShortestPathOrder) => {
+  const animateShortestPath = async (nodesInShortestPathOrder) => {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-shortest-path';
       }, 50 * i);
+
+      // console.log(nodesInShortestPathOrder[i]);
+      if (nodesInShortestPathOrder[i].isFinish) {
+        setTimeout(() => {
+          toggleIsRunning(false);
+        }, i * 60);
+      } 
+
     }
   };
 
-  const animateAlgorithm = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+  const animateAlgorithm = async(visitedNodesInOrder, nodesInShortestPathOrder) => {
+
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -169,21 +180,74 @@ const PathfindingVisualizer = (props) => {
   };
 
   const visualizeAlgorithm = (algorithm) => {
-    const startNode = grid[START_ROW][START_COL];
-    const finishNode = grid[END_ROW][END_COL];
+    if (!isRunning) {
+      toggleIsRunning(true);
+      const startNode = grid[START_ROW][START_COL];
+      const finishNode = grid[END_ROW][END_COL];
 
-    let visitedNodesInOrder;
+      let visitedNodesInOrder;
 
-    switch (algorithm) {
-      case 'Dijkstra':
-        visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-        break;
-      default:
+      switch (algorithm) {
+        case 'Dijkstra':
+          visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+          break;
+        default:
+      }
+
+      visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+      const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+      animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     }
+  };
 
-    visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  const clearGrid = () => {
+    if (!isRunning) {
+      const newGrid = grid.slice();
+      for (const row of newGrid) {
+        for (const node of row) {
+          node.distance = Infinity;
+          node.isVisited = false;
+          node.isWall = false;
+          node.previousNode = null;
+          node.isStart = false;
+          node.isFinish = false;
+
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            'node';
+
+          START_ROW = 10;
+          START_COL = 15;
+          END_ROW = 10;
+          END_COL = 35;
+
+          if (node.row === START_ROW && node.col === START_COL) {
+            node.isStart = true;
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              'node node-start';
+          }
+          if (node.row === END_ROW && node.col === END_COL) {
+            node.isFinish = true;
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              'node node-finish';
+          }
+        }
+      }
+    }
+  };
+
+  const clearWalls = () => {
+    if (!isRunning) {
+      const newGrid = grid.slice();
+      for (const row of newGrid) {
+        for (const node of row) {
+          if (node.isWall) {
+            node.isWall = false;
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              'node';
+          }
+        }
+      }
+    }
   };
 
   const gridElement = (
@@ -201,7 +265,7 @@ const PathfindingVisualizer = (props) => {
                   isFinish={isFinish}
                   isStart={isStart}
                   isWall={isWall}
-                  mouseIsPressed={mouseIsPressed}
+                  // mouseIsPressed={mouseIsPressed}
                   onMouseDown={(row, col) => handleMouseDown(row, col)}
                   onMouseEnter={(row, col) => handleMouseEnter(row, col)}
                   onMouseLeave={() => handleMouseLeave(row, col)}
@@ -217,7 +281,11 @@ const PathfindingVisualizer = (props) => {
 
   return (
     <>
-      <Header visualize={(algo) => visualizeAlgorithm(algo) } />
+      <Header
+        visualize={(algo) => visualizeAlgorithm(algo)}
+        clearGrid={clearGrid}
+        clearWalls={clearWalls}
+      />
       <main className={'gridContainer'}>{gridElement}</main>
     </>
   );

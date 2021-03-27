@@ -1,8 +1,9 @@
 .node {
   width: 26px;
   height: 26px;
-  outline: 1px solid rgb(175, 216, 248);
+  outline: 1px solid #b0dfe5;
   display: inline-block;
+  //margin: 0;
 }
 
 .node-finish {
@@ -27,27 +28,36 @@
 @keyframes visitedAnimation {
   0% {
     transform: scale(0.3);
-    background-color: rgba(0, 0, 66, 0.75);
+    background-image: linear-gradient(
+      to right top,
+      #051937,
+      #004d7a,
+      #008793,
+      #00bf72,
+      #a8eb12
+    );
     border-radius: 100%;
   }
 
   50% {
-    background-color: rgba(17, 104, 217, 0.75);
+    background-color: #845ec2;
+    // background-image: null;
   }
 
   75% {
     transform: scale(1.2);
-    background-color: rgba(0, 217, 159, 0.75);
+    background-color: #4ffbdf;
+    // background-image: node;
   }
 
   100% {
     transform: scale(1);
-    background-color: rgba(0, 190, 218, 0.75);
+    background-color: #00B287;
   }
 }
 
 .node-wall {
-  background-color: rgb(12, 53, 71);
+  background-color: #2F4858;
 }
 
 .node-shortest-path {
@@ -64,16 +74,16 @@
 @keyframes shortestPath {
   0% {
     transform: scale(0.6);
-    background-color: rgb(255, 254, 106);
+    background-color: #FF846F;
   }
 
   50% {
     transform: scale(1.2);
-    background-color: rgb(255, 254, 106);
+    background-color: #FF846F;
   }
 
   100% {
     transform: scale(1);
-    background-color: rgb(255, 254, 106);
+    background-color: #FF846F;
   }
 }
