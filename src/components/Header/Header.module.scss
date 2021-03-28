@@ -1,24 +1,182 @@
 .header {
-  height:90px;
+  height: 90px;
   padding: 15px;
   background-color: #0e4d92;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  color:#f2f2f2;
+  color: #f2f2f2;
   margin-bottom: 10px;
+  font-weight: 700;
+  position: relative;
+}
+
+.info {
+  position: absolute;
+  right: 20px;
+
+  &:hover &__box {
+    display:block;
+  }
+
+  &__svg {
+    cursor: pointer;
+  }
+
+  &__box {
+    display: none;
+    position: absolute;
+    top: 15px;
+    left: -270px;
+    padding: 15px;
+    color: #2f2f2f;
+    background-color: #fdfcfa;
+    max-width: 250px;
+    min-width: 250px;
+
+    & > p {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 0;
+      padding: 0;
+
+      margin-bottom: 20px;
+    }
+  }
+
+  &__boxGrid {
+    display:flex;
+    flex-direction:column;
+    padding: 20px;
+
+    &__row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 7px;
+
+      & > span {
+        align-self: center;
+      }
+
+      &Node {
+        width: 26px;
+        height: 26px;
+        outline: 1px solid #b0dfe5;
+        display: inline-block;
+      }
+
+      &NodeStart {
+        background-color: green;
+      }
+
+      &NodeEnd {
+        background-color: red;
+      }
+
+      &NodeWall {
+        background-color: #2F4858;
+      }
+
+      &NodeVisited {
+        background-color: #00B287;
+      }
+
+      &NodeShortest {
+        background-color: #FF846F;
+      }
+    }
+  }
 }
 
 .name {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: inherit;
+  margin-bottom: 18px;
 }
 
 .controls {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr repeat(3, auto) 1fr;
+  grid-column-gap: 5px;
+  width: 100%;
 }
 
-.button {
-  color: inherit;
+.features {
+  margin-right: auto;
+  display: flex;
+
+  & > * {
+    margin-right: 20px;
+  }
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+  text-decoration: none;
+  background-color: transparent;
+  color: #f2f2f2;
+  font-weight: inherit;
+  font-size: 16px;
+
+  &:hover {
+    color: #4caf50;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &__visualize {
+    grid-column-start: 2;
+
+    background-color: #4caf50;
+    padding: 15px;
+
+    &:hover {
+      background-color: #3e8e41;
+      color: #f2f2f2;
+    }
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: flex;
+
+  &:hover .dropdownContent {
+    display: block;
+  }
+
+  &:hover .btn__dropdown {
+    color: #4caf50;
+  }
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  top: 40px;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+
+  & > button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s;
+    font-size: inherit;
+    width: 100%;
+    font-weight: 300;
+
+    &:hover {
+      background-color: #ddd;
+      color: black;
+    }
+  }
 }

@@ -131,39 +131,32 @@ const PathfindingVisualizer = (props) => {
     changeMousePressed(false);
   };
 
-  // Backtracks from the finishNode to find the shortest path.
-  // Only works when called *after* the dijkstra method above.
-  const getNodesInShortestPathOrder = (finishNode) => {
-    const nodesInShortestPathOrder = [];
-    let currentNode = finishNode;
-    while (currentNode !== null) {
-      nodesInShortestPathOrder.unshift(currentNode);
-      currentNode = currentNode.previousNode;
-    }
-    return nodesInShortestPathOrder;
-  };
-
   const animateShortestPath = async (nodesInShortestPathOrder) => {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
-        document.getElementById(`node-${node.row}-${node.col}`).className =
-          'node node-shortest-path';
+        if (
+          !(
+            nodesInShortestPathOrder[i].isFinish &&
+            !nodesInShortestPathOrder[i].previousNode
+          )
+        )
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            'node node-shortest-path';
       }, 50 * i);
 
-      // console.log(nodesInShortestPathOrder[i]);
       if (nodesInShortestPathOrder[i].isFinish) {
         setTimeout(() => {
           toggleIsRunning(false);
         }, i * 60);
-      } 
-
+      }
     }
   };
 
-  const animateAlgorithm = async(visitedNodesInOrder, nodesInShortestPathOrder) => {
-
+  const animateAlgorithm = async (
+    visitedNodesInOrder,
+    nodesInShortestPathOrder
+  ) => {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -177,6 +170,18 @@ const PathfindingVisualizer = (props) => {
           'node node-visited';
       }, 10 * i);
     }
+  };
+
+  // Backtracks from the finishNode to find the shortest path.
+  // Only works when called *after* the dijkstra method above.
+  const getNodesInShortestPathOrder = (finishNode) => {
+    const nodesInShortestPathOrder = [];
+    let currentNode = finishNode;
+    while (currentNode !== null) {
+      nodesInShortestPathOrder.unshift(currentNode);
+      currentNode = currentNode.previousNode;
+    }
+    return nodesInShortestPathOrder;
   };
 
   const visualizeAlgorithm = (algorithm) => {
@@ -265,7 +270,6 @@ const PathfindingVisualizer = (props) => {
                   isFinish={isFinish}
                   isStart={isStart}
                   isWall={isWall}
-                  // mouseIsPressed={mouseIsPressed}
                   onMouseDown={(row, col) => handleMouseDown(row, col)}
                   onMouseEnter={(row, col) => handleMouseEnter(row, col)}
                   onMouseLeave={() => handleMouseLeave(row, col)}

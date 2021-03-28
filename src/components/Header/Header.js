@@ -1,84 +1,126 @@
 import styles from './Header.module.scss';
 
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+
+import { ReactComponent as InfoSvg } from '../../assets/information.svg';
 
 const Header = (props) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [algo, setAlgo] = useState(null);
-
-  const handleDropdownClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleDropdownClose = () => {
-    setAnchorEl(null);
-  };
+  const [algorithm, setAlgorithm] = useState(null);
 
   const handleDropDownItemClicked = (value) => {
-    setAnchorEl(null);
-    setAlgo(value);
+    setAlgorithm(value);
   };
 
   const handleVisualize = () => {
-    // console.log(props);
-    props.visualize(algo);
+    if (algorithm) props.visualize(algorithm);
   };
 
   const handleClearGrid = () => {
     props.clearGrid();
-  }
+  };
 
   const handleClearWalls = () => {
     props.clearWalls();
-  }
+  };
+
+  const visualizerInfoElement = (
+    <div className={styles.info__box}>
+      <p>
+        Welcome to the <br /> PathFinding Visualizer
+      </p>
+      <div className={styles.info__boxGrid}>
+        <div className={styles.info__boxGrid__row}>
+          <span>Start Node</span>
+          <div
+            className={`${styles.info__boxGrid__rowNode} 
+            ${styles.info__boxGrid__rowNodeStart} `}
+          ></div>
+        </div>
+
+        <div className={styles.info__boxGrid__row}>
+          <span>End Node</span>
+          <div
+            className={`${styles.info__boxGrid__rowNode} 
+            ${styles.info__boxGrid__rowNodeEnd} `}
+          ></div>
+        </div>
+
+        <div className={styles.info__boxGrid__row}>
+          <span>Wall</span>
+          <div
+            className={`${styles.info__boxGrid__rowNode} 
+            ${styles.info__boxGrid__rowNodeWall} `}
+          ></div>
+        </div>
+
+        <div className={styles.info__boxGrid__row}>
+          <span>Visited Node</span>
+          <div
+            className={`${styles.info__boxGrid__rowNode} 
+            ${styles.info__boxGrid__rowNodeVisited} `}
+          ></div>
+        </div>
+
+        <div className={styles.info__boxGrid__row}>
+          <span>Shortest path nodes</span>
+          <div
+            className={`${styles.info__boxGrid__rowNode} 
+            ${styles.info__boxGrid__rowNodeShortest} `}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <header className={styles.header}>
       <div className={styles.name}>PathFinding Visualizer</div>
-
+      <div className={styles.info}>
+        <InfoSvg width='30px' className={styles.info__svg} />
+        {visualizerInfoElement}
+      </div>
       <div className={styles.controls}>
-        <div className={styles.algoDropdown}>
-          <Button
-            color='inherit'
-            aria-controls='simple-menu'
-            aria-haspopup='true'
-            onClick={handleDropdownClick}
-          >
-            Choose Algorithm
-          </Button>
-          <Menu
-            id='simple-menu'
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleDropdownClose}
-          >
-            <MenuItem onClick={() => handleDropDownItemClicked('Dijkstra')}>
-              Dijkstra
-            </MenuItem>
-            <MenuItem onClick={() => handleDropDownItemClicked('BFS')}>
-              BFS
-            </MenuItem>
-            <MenuItem onClick={() => handleDropDownItemClicked('DFS')}>
-              DFS
-            </MenuItem>
-          </Menu>
+        <div className={styles.features}>
+          <div className={styles.dropdown}>
+            <button className={`${styles.btn} ${styles.btn__dropdown}`}>
+              Choose Algorithm
+            </button>
+            <div className={styles.dropdownContent}>
+              <button
+                className={`${styles.btn}`}
+                onClick={() => handleDropDownItemClicked('Dijkstra')}
+              >
+                Dijkstra
+              </button>
+              <button
+                className={`${styles.btn}`}
+                onClick={() => handleDropDownItemClicked('BFS')}
+              >
+                BFS
+              </button>
+              <button
+                className={`${styles.btn}`}
+                onClick={() => handleDropDownItemClicked('DFS')}
+              >
+                DFS
+              </button>
+            </div>
+          </div>
+          <button className={`${styles.btn}`} onClick={handleClearGrid}>
+            Clear Grid
+          </button>
+
+          <button className={`${styles.btn}`} onClick={handleClearWalls}>
+            Clear Walls
+          </button>
         </div>
 
-        <Button color='inherit' onClick={handleVisualize}>
-          Visualize {algo}
-        </Button>
-
-        <Button color='inherit' onClick={handleClearGrid}>
-          Clear Grid
-        </Button>
-
-        <Button color='inherit' onClick={handleClearWalls}>
-          Clear Walls
-        </Button>
+        <button
+          className={`${styles.btn} ${styles.btn__visualize}`}
+          onClick={handleVisualize}
+        >
+          Visualize {algorithm}
+        </button>
       </div>
     </header>
   );
