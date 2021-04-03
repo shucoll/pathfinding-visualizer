@@ -28,14 +28,16 @@
     display: none;
     position: absolute;
     top: 15px;
+    //left: -500px;
     left: -270px;
     padding: 15px;
     color: #2f2f2f;
     background-color: #fdfcfa;
-    max-width: 250px;
+    //max-width: 450px;
     min-width: 250px;
+    z-index: 1;
 
-    & > p {
+    & > h3 {
       text-align: center;
       font-size: 1.2rem;
       margin: 0;
@@ -45,10 +47,17 @@
     }
   }
 
+  &__box__sourceInfo {
+    & > a {
+      text-decoration: none;
+    }
+  }
+
   &__boxGrid {
     display:flex;
     flex-direction:column;
     padding: 20px;
+    //margin: 0 30px 0 30px;
 
     &__row {
       display: flex;

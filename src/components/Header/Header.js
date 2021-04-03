@@ -3,6 +3,7 @@ import styles from './Header.module.scss';
 import React, { useState } from 'react';
 
 import { ReactComponent as InfoSvg } from '../../assets/information.svg';
+import { ReactComponent as GithubSvg } from '../../assets/github.svg';
 
 const Header = (props) => {
   const [algorithm, setAlgorithm] = useState(null);
@@ -25,9 +26,9 @@ const Header = (props) => {
 
   const visualizerInfoElement = (
     <div className={styles.info__box}>
-      <p>
+      <h3>
         Welcome to the <br /> PathFinding Visualizer
-      </p>
+      </h3>
       <div className={styles.info__boxGrid}>
         <div className={styles.info__boxGrid__row}>
           <span>Start Node</span>
@@ -62,12 +63,19 @@ const Header = (props) => {
         </div>
 
         <div className={styles.info__boxGrid__row}>
-          <span>Shortest path nodes</span>
+          <span>Shortest Path Node</span>
           <div
             className={`${styles.info__boxGrid__rowNode} 
             ${styles.info__boxGrid__rowNodeShortest} `}
           ></div>
         </div>
+      </div>
+      <div className={styles.info__box__sourceInfo}>
+        Source code
+        <a href='https://github.com' target='_blank' rel='noopener noreferrer'>
+          {' '}
+          here <GithubSvg width='15px' />
+        </a>
       </div>
     </div>
   );
@@ -94,15 +102,9 @@ const Header = (props) => {
               </button>
               <button
                 className={`${styles.btn}`}
-                onClick={() => handleDropDownItemClicked('BFS')}
+                onClick={() => handleDropDownItemClicked('AStar')}
               >
-                BFS
-              </button>
-              <button
-                className={`${styles.btn}`}
-                onClick={() => handleDropDownItemClicked('DFS')}
-              >
-                DFS
+                AStar
               </button>
             </div>
           </div>
