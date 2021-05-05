@@ -72,7 +72,11 @@ const Header = (props) => {
       </div>
       <div className={styles.info__box__sourceInfo}>
         View the source code
-        <a href='https://github.com' target='_blank' rel='noopener noreferrer'>
+        <a
+          href='https://github.com/shucoll/pathfinding-visualizer'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
           {' '}
           here <GithubSvg width='15px' />
         </a>

@@ -11,13 +11,13 @@
  
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-#### [Live DEMO](https://github.com/)
+#### [Live DEMO](http://shucoll.github.io/pathfinding-visualizer)
 
 ## Installation and Usage
 
  First clone the rep
 ```sh
-git clone https:://……git repo link….  
+git clone https://github.com/shucoll/pathfinding-visualizer.git  
 ```
 Install the dependencies
 ```sh
