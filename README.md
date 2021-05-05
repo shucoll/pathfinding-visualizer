@@ -11,7 +11,7 @@
  
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-#### [Live DEMO](http://shucoll.github.io/pathfinding-visualizer)
+#### [Live DEMO](https://shucoll.github.io/pathfinding-visualizer/)
 
 ## Installation and Usage
 
@@ -40,15 +40,15 @@ App interface
 ![App interface](./images/interface.png)
 
 Dropdown to select algorithms
-![Dropdown](./images/interface.png)
+![Dropdown](./images/dropdown.png)
 
 Creating walls with click and drag
-![Walls](./images/interface.png)
+![Walls](./images/walls.png)
 
 Visualizing the selected algorithm
-![Visualization](./images/interface.png)
+![Visualization](./images/visualization.png)
 
 Generated shortest path after visualization
-![Shortest Pth](./images/interface.png)
+![Shortest Pth](./images/path.png)
 
 
