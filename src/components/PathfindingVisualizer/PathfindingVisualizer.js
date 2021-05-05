@@ -194,7 +194,6 @@ const PathfindingVisualizer = (props) => {
   const visualizeAlgorithm = (algorithm) => {
     if (!isRunning) {
       toggleIsRunning(true);
-      clearGrid();
       const startNode = grid[START_ROW][START_COL];
       const finishNode = grid[END_ROW][END_COL];
 

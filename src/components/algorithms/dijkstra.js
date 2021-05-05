@@ -1,7 +1,4 @@
-// Performs Dijkstra's algorithm; returns *all* nodes in the order
-// in which they were visited. Also makes nodes point back to their
-// previous node, effectively allowing us to compute the shortest path
-// by backtracking from the finish node.
+// Performs Dijkstra's algorithm; returns *all* nodes in the orderin which they were visited. Also makes nodes point back to their previous node, effectively allowing us to compute the shortest path by backtracking from the finish node.
 
 //At first all the nodes are at a distance of infinity. First we set the distance of our start node as 0. Then we sort the array of nodes and choose the node with shortest distance(ie, start node). Set that node as visited. Add that node to our visited nodes array. Finally update the neighbors of that node to have a distance of 0 so that one of them is picked in the next iteration.
 export function dijkstra(grid, startNode, finishNode) {
