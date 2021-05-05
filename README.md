@@ -51,4 +51,6 @@ Visualizing the selected algorithm
 Generated shortest path after visualization
 ![Shortest Pth](./images/path.png)
 
+## LICENSE
 
+#### [MIT](https://github.com/shucoll/pathfinding-visualizer/blob/main/LICENSE)
